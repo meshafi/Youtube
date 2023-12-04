@@ -91,8 +91,8 @@ const Video = () => {
       const querySnapshot = await getDocs(collection(db, "subscriptions"));
       const matchingSubs = querySnapshot.docs.some((doc) => {
         const data = doc.data();
-        if(data){
-        return data.channel_id==channel.id;
+        if(user){
+        return (data.user_id==user.uid)&&(channel.id==data.channel_id);
         }
       });
       if(matchingSubs){
@@ -105,7 +105,7 @@ const Video = () => {
 
   useEffect(() => {
     if (!isSubscribed) fetchSubsriptionDetails();
-  }, [channel]);
+  }, [channel,user]);
 
 
   //subscription
@@ -124,6 +124,7 @@ const Video = () => {
           where("channel_id", "==", channelId),
           where("user_id", "==", userId)
         );
+
         const subsSnapshot = await getDocs(subsQuery);
 
         subsSnapshot.forEach(async (doc) => {
@@ -255,7 +256,7 @@ const Video = () => {
       </div>
       <div style={{ flex: 2 }}>
         {videos.slice(1).map((video, index) => (
-          <Card key={index} video={video} />
+          <Card key={index}video={video} />
         ))}
       </div>
     </div>
