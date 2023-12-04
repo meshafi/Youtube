@@ -164,6 +164,7 @@ const Video = () => {
         backgroundColor: "#202020",
         color: "white",
         marginTop: "100px",
+        marginBottom:"40px",
       }}
     >
       <div style={{ flex: 5 }}>

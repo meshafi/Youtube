@@ -18,7 +18,7 @@ const Menu = () => {
         backgroundColor: "#202020",
         color: "white",
         fontSize: "16px",
-        width: "12vw",
+        width: "30vw",
         height: "100vh",
         borderRadius: "0",
         boxShadow: "none",

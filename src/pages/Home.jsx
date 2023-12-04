@@ -9,7 +9,7 @@ const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   background-color: #202020;
-  padding: 40px 30px;
+  padding: 60px 70px;
   margin-top:50px;
 `;
 
