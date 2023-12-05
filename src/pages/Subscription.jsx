@@ -87,8 +87,6 @@ const Subscriptions = () => {
     fetchData();
   }, [channel]);
 
-  console.log(videos);
-  
 
   if (loading) {
     return <div style={{ height: "90vh", backgroundColor: "#202020" }}></div>;

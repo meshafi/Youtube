@@ -119,7 +119,6 @@ useEffect(()=>{
                 <Texts>
                   <Title>{video && video.title}</Title>
                   <ChannelName>{channel.name &&channel.name.toLowerCase()}</ChannelName>
-                  <Info>{`630,908 views • ${date}`}</Info>
                 </Texts>
               </>
             </Details>

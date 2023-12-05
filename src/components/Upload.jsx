@@ -8,8 +8,10 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { app } from "../Firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc ,getDocs} from "firebase/firestore";
 import { useUser } from "../context/UserContext.jsx";
+import { useNavigate } from "react-router-dom";
+
 
 const Container = styled.div`
   width: 100%;
@@ -75,7 +77,7 @@ const Label = styled.label`
 
 const Upload = ({ setOpen }) => {
   const user = useUser();
-
+  const navigate = useNavigate();
   const [downloadImg, setDownloadImg] = useState(undefined);
   const [downloadVideo, setDownloadVideo] = useState(undefined);
   const [imgPerc, setImgPerc] = useState(0);
@@ -83,6 +85,7 @@ const Upload = ({ setOpen }) => {
   const [inputs, setInputs] = useState({});
   const [tags, setTags] = useState([]);
   const [error, setError] = useState("");
+  const [channel,setChannel]=useState({});
 
   const handleChange = (e) => {
     setInputs((prev) => {
@@ -129,7 +132,8 @@ const Upload = ({ setOpen }) => {
       }
     );
   };
-
+  
+  
   const uploadDatabase = async () => {
     if (!inputs.title || !inputs.desc || !downloadImg || !downloadVideo) {
       setError("All fields are required!");
@@ -155,7 +159,8 @@ const Upload = ({ setOpen }) => {
       inputs.imgUrl,
       inputs.videoUrl,
       tags,
-      time
+      time,
+      channel.id
     );
   };
 
@@ -167,6 +172,24 @@ const Upload = ({ setOpen }) => {
     downloadImg && uploadFile(downloadImg, "imgUrl");
   }, [downloadImg]);
 
+
+  const fetchChannelDetails = async () => {
+    const querySnapshot = await getDocs(collection(db, "channels"));
+    const matchingChannel = querySnapshot.docs.find((doc) => {
+      const data = doc.data();
+      if(user)
+      return data.user_id === user.uid; 
+    });
+  
+    if (matchingChannel) {
+      setChannel(matchingChannel.data());
+    }
+  };
+  
+useEffect(()=>{
+  fetchChannelDetails();
+},[user])
+
   async function createVideo(
     userId,
     videoId,
@@ -175,7 +198,8 @@ const Upload = ({ setOpen }) => {
     thumbnailLink,
     videoLink,
     videoTag,
-    videoTime
+    videoTime,
+    channelId
   ) {
     try {
       const videoRef = await addDoc(collection(db, "videos"), {
@@ -186,13 +210,15 @@ const Upload = ({ setOpen }) => {
         thumbnail: thumbnailLink,
         video: videoLink,
         tag: videoTag,
-        time:videoTime
+        time:videoTime,
+        channel_id:channelId
       });
       console.log("Video added with ID: ", videoRef.id);
     } catch (error) {
       console.error("Error adding video: ", error);
     }
     setOpen(false);
+    navigate("/yourvideos"); 
   }
 
 

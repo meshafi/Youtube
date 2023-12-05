@@ -247,7 +247,7 @@ const Video = () => {
             justifyContent: "space-between",
           }}
         >
-          <span style={{ color: "white" }}>{`100 views • ${videos[0]&&videos[0].time}`}</span>
+          <span style={{ color: "white" }}>{`${videos[0]&&videos[0].time}`}</span>
         </div>
         <div style={{ marginTop: "20px", color: "darkgray" }}>
           {videos[0] && videos[0].description}
